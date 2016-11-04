@@ -37,10 +37,10 @@ int main(int argc, char *argv[]){
   printf("Data received: %s",buffer);   
 while(1){ 
   /*---- Sending parameters to server ----*/
- /* parameters[0]=atoi(argv[1]);
+  parameters[0]=atoi(argv[1]);
   parameters[1]=atoi(argv[2]);
   parameters[2]=atoi(argv[3]);
- nBytes=sizeof(parameters);*/
+ nBytes=sizeof(parameters);
   char a[1024];
   strcpy(a,"a");
   send(clientSocket,a,sizeof(a),0); 
