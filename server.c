@@ -45,11 +45,9 @@ int main(){
   /*---- Send message to the socket of the incoming connection ----*/
   strcpy(buffer,"siemanko panie chalimon\n");
   send(newSocket,buffer,sizeof(buffer),0);
-  //free(buffer);
 
 recv(newSocket,secondBuffer,sizeof(secondBuffer),0);
   printf("odebrane dane: %s\n",secondBuffer);
- //free(secondBuffer);
 
 
 
