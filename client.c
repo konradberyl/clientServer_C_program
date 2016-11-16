@@ -4,13 +4,22 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <string.h>
+#include <stdlib.h>
+
+  char dod[]="suma";
+  char mno[]="iloczyn";
+  char odej[]="roznica";
+  char dzie[]="iloraz";
+  char znak[1];
+  float dzialanie;
 
 int main(int argc, char *argv[]){
-  int clientSocket, nBytes;
-  char buffer[1024];
-  int parameters[2];
+  int clientSocket;
+  float wynik;
+  float parameters[3];
   struct sockaddr_in serverAddr;
   socklen_t addr_size;
+
 
   /*---- Create the socket. The three arguments are: ----*/
   /* 1) Internet domain 2) Stream socket 3) Default protocol (TCP in this case) */
@@ -30,21 +39,44 @@ int main(int argc, char *argv[]){
   addr_size = sizeof serverAddr;
   connect(clientSocket, (struct sockaddr *) &serverAddr, addr_size);
 
-  /*---- Read the message from the server into the buffer ----*/
-  recv(clientSocket, buffer, 1024, 0);
+
+  
+
+if(strcmp(dod,argv[4])==0){
+	dzialanie=1.0;
+        strcpy(znak,"+");
+  }
+  else if(strcmp(odej,argv[4])==0){
+	dzialanie=2.0;
+        strcpy(znak,"-");
+  }
+  else if(strcmp(mno,argv[4])==0){
+	dzialanie=3.0;
+        strcpy(znak,"*");
+  }
+  else if(strcmp(dzie,argv[4])==0){
+	dzialanie=4.0;
+        strcpy(znak,"/");
+  }
+ /*---- Sending parameters to server ----*/
+  parameters[0]=atof(argv[2]);
+  parameters[1]=atof(argv[3]);
+  parameters[2]=dzialanie;
+
+
+ 
+  send(clientSocket,parameters,sizeof(parameters),0); 	
+   
+while(1){ 
+ 
+ /*---- Read the message from the server into the buffer ----*/
+  recv(clientSocket,&wynik, sizeof(wynik), 0);
 
   /*---- Print the received message ----*/
-  printf("Data received: %s",buffer);   
-while(1){ 
-  /*---- Sending parameters to server ----*/
- /* parameters[0]=atoi(argv[1]);
-  parameters[1]=atoi(argv[2]);
-  parameters[2]=atoi(argv[3]);
- nBytes=sizeof(parameters);*/
-  char a[1024];
-  strcpy(a,"a");
-  send(clientSocket,a,sizeof(a),0); 
-
+   printf("%.2f %s %.2f = %.2f \n",parameters[0],znak,parameters[1],wynik);
+ break;
 }
+
+
   return 0;
 }
